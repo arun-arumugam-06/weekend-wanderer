@@ -140,9 +140,9 @@ const calculateTotalCost = (items: ItineraryItem[]): number => {
     }
   });
   
-  // Add estimated meal costs (2 meals per day at $15 each)
+  // Add estimated meal costs (2 meals per day at ₹300 each)
   const days = Math.ceil(items.length / 4); // Assuming 4 activities per day
-  total += days * 2 * 15;
+  total += days * 2 * 300; // ₹300 per meal in India
   
   return total;
 };
