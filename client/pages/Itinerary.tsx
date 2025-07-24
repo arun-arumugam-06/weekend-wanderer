@@ -101,8 +101,12 @@ export default function Itinerary() {
   const getTransportIcon = (type: string) => {
     switch (type) {
       case 'walking': return <Footprints className="w-4 h-4" />;
-      case 'driving': return <Car className="w-4 h-4" />;
-      case 'public_transport': return <Bus className="w-4 h-4" />;
+      case 'driving':
+      case 'taxi': return <Car className="w-4 h-4" />;
+      case 'auto_rickshaw': return <Car className="w-4 h-4" />;
+      case 'public_transport':
+      case 'bus':
+      case 'metro': return <Bus className="w-4 h-4" />;
       default: return <Navigation className="w-4 h-4" />;
     }
   };
