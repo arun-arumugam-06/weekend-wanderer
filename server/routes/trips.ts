@@ -144,10 +144,19 @@ export const handlePlanTrip: RequestHandler = async (req, res) => {
     const items = await createOptimizedItinerary(attractions, startDate, endDate);
     const totalCost = calculateTotalCost(items);
 
+    // Ensure we have a valid user ID
+    if (!userId) {
+      const response: TripPlanResponse = {
+        success: false,
+        message: "User authentication required to save itinerary"
+      };
+      return res.status(401).json(response);
+    }
+
     // Create itinerary object
     const itinerary: Itinerary = {
       id: `itinerary_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      userId: userId || "anonymous",
+      userId,
       location,
       startDate,
       endDate,
@@ -158,6 +167,7 @@ export const handlePlanTrip: RequestHandler = async (req, res) => {
 
     // Store itinerary
     itineraries.push(itinerary);
+    console.log(`✅ Saved itinerary for user ${userId}:`, itinerary.location, `(Total: ${itineraries.filter(i => i.userId === userId).length} itineraries)`);
 
     const response: TripPlanResponse = {
       success: true,
