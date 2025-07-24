@@ -5,23 +5,45 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AuthResponse } from "@shared/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // TODO: Implement actual login logic
+    setError("");
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
-      alert("Login functionality coming soon!");
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data: AuthResponse = await response.json();
+
+      if (data.success && data.token) {
+        // Store token in localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Redirect to dashboard
+        navigate("/dashboard");
+      } else {
+        setError(data.message || "Login failed");
+      }
     } catch (error) {
       console.error("Login error:", error);
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
