@@ -166,14 +166,24 @@ export default function Dashboard() {
           <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5" />
-                  Recent Itineraries
-                </CardTitle>
-                <CardDescription>
-                  Your latest weekend plans and adventures
-                </CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5" />
+                    Recent Itineraries
+                  </CardTitle>
+                  <CardDescription>
+                    Your latest weekend plans and adventures
+                  </CardDescription>
+                </div>
+                {itineraries.length > 0 && (
+                  <Link to="/">
+                    <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                      <Plus className="w-4 h-4 mr-2" />
+                      New Trip
+                    </Button>
+                  </Link>
+                )}
               </CardHeader>
               <CardContent>
                 {itineraries.length === 0 ? (
