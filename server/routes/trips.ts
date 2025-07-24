@@ -107,6 +107,8 @@ export const handlePlanTrip: RequestHandler = async (req, res) => {
     const { startDate, endDate, location }: TripPlanRequest = req.body;
     const userId = (req as any).userId;
 
+    console.log("🎯 Planning trip for:", { location, startDate, endDate, userId });
+
     // Validate input
     if (!startDate || !endDate || !location) {
       const response: TripPlanResponse = {
