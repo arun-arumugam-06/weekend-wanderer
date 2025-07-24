@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import Itinerary from "./pages/Itinerary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
