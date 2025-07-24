@@ -30,14 +30,16 @@ export default function Itinerary() {
   useEffect(() => {
     // First check if there's a current itinerary in localStorage
     const currentItinerary = localStorage.getItem("currentItinerary");
-    if (currentItinerary) {
+    if (currentItinerary && !id) {
       try {
         const parsed = JSON.parse(currentItinerary);
+        console.log("📋 Loading itinerary from localStorage:", parsed.location, parsed.items.map(i => i.attraction.name));
         setItinerary(parsed);
         setLoading(false);
         return;
       } catch (e) {
         console.error("Error parsing current itinerary:", e);
+        localStorage.removeItem("currentItinerary"); // Clear invalid data
       }
     }
 
