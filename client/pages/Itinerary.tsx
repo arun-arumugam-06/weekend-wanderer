@@ -186,7 +186,7 @@ export default function Itinerary() {
             </Badge>
             <Badge variant="secondary" className="bg-green-100 text-green-800">
               <DollarSign className="w-3 h-3 mr-1" />
-              ${itinerary.totalCost} total
+              ₹{itinerary.totalCost} total
             </Badge>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
