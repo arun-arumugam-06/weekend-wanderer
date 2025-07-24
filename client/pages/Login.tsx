@@ -55,7 +55,28 @@ export default function Login() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        console.log("🎉 Login successful, redirecting to dashboard");
+        console.log("🎉 Login successful, loading user data...");
+
+        // Pre-load user itineraries to ensure data persistence
+        try {
+          const itinerariesResponse = await fetch("/api/trips", {
+            headers: {
+              "Authorization": `Bearer ${data.token}`,
+            },
+          });
+
+          if (itinerariesResponse.ok) {
+            const itinerariesData = await itinerariesResponse.json();
+            console.log(`📋 Pre-loaded ${itinerariesData.total || 0} saved itineraries for user`);
+          }
+        } catch (error) {
+          console.log("📋 Could not pre-load itineraries:", error);
+        }
+
+        // Clear any old cached itinerary data
+        localStorage.removeItem("currentItinerary");
+
+        console.log("🎉 Redirecting to dashboard");
         // Redirect to dashboard
         navigate("/dashboard");
       } else {
