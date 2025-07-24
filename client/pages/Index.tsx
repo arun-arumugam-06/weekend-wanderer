@@ -1,30 +1,67 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CalendarDays, MapPin, Clock, Compass, Users, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { TripPlanResponse } from "@shared/api";
 
 export default function Index() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [location, setLocation] = useState("");
   const [isPlanning, setIsPlanning] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handlePlanTrip = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!startDate || !endDate || !location) {
-      alert("Please fill in all fields");
+      setError("Please fill in all fields");
       return;
     }
-    
+
     setIsPlanning(true);
-    // TODO: Implement trip planning logic
-    setTimeout(() => {
+    setError("");
+
+    try {
+      // Check if user is logged in
+      const token = localStorage.getItem("token");
+      if (!token) {
+        // Redirect to signup for unauthenticated users
+        navigate("/signup");
+        return;
+      }
+
+      const response = await fetch("/api/trips/plan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          startDate,
+          endDate,
+          location,
+        }),
+      });
+
+      const data: TripPlanResponse = await response.json();
+
+      if (data.success && data.itinerary) {
+        // Store the itinerary and redirect to view it
+        localStorage.setItem("currentItinerary", JSON.stringify(data.itinerary));
+        navigate("/dashboard");
+      } else {
+        setError(data.message || "Failed to plan trip");
+      }
+    } catch (error) {
+      console.error("Trip planning error:", error);
+      setError("Something went wrong. Please try again.");
+    } finally {
       setIsPlanning(false);
-      alert("Trip planning feature coming soon!");
-    }, 2000);
+    }
   };
 
   return (
