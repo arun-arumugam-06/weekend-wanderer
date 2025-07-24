@@ -59,9 +59,12 @@ export default function Index() {
     try {
       // Check if user is logged in
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token || !isLoggedIn) {
         // Redirect to signup for unauthenticated users
-        navigate("/signup");
+        setError("Please sign in to create an itinerary");
+        setTimeout(() => {
+          navigate("/signup");
+        }, 2000);
         return;
       }
 
