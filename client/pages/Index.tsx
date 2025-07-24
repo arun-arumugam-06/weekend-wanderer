@@ -334,11 +334,11 @@ export default function Index() {
           <div className="grid md:grid-cols-4 gap-8 text-center text-white">
             <div>
               <div className="text-4xl font-bold mb-2">50K+</div>
-              <div className="text-blue-100">Trips Planned</div>
+              <div className="text-brand-100">Trips Planned</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">1000+</div>
-              <div className="text-blue-100">Cities Covered</div>
+              <div className="text-brand-100">Cities Covered</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">4.9</div>
