@@ -212,13 +212,16 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <Button variant="outline" className="h-20 flex-col space-y-2">
+                  <Link to="/">
+                    <Button variant="outline" className="w-full h-20 flex-col space-y-2">
+                      <Plus className="w-6 h-6" />
+                      <span>Plan New Trip</span>
+                    </Button>
+                  </Link>
+                  <Button variant="outline" className="h-20 flex-col space-y-2" disabled>
                     <Search className="w-6 h-6" />
                     <span>Find Destinations</span>
-                  </Button>
-                  <Button variant="outline" className="h-20 flex-col space-y-2">
-                    <Calendar className="w-6 h-6" />
-                    <span>Plan New Trip</span>
+                    <span className="text-xs text-gray-400">(Coming Soon)</span>
                   </Button>
                 </div>
               </CardContent>
