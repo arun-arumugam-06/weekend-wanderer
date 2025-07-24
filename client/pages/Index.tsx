@@ -192,23 +192,34 @@ export default function Index() {
                     </div>
                   )}
 
-                  <Button
-                    type="submit"
-                    disabled={isPlanning}
-                    className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50"
-                  >
-                    {isPlanning ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        Planning Your Adventure...
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <Compass className="w-5 h-5" />
-                        Create My Itinerary
-                      </div>
-                    )}
-                  </Button>
+                  <div className="space-y-3">
+                    <Button
+                      type="submit"
+                      disabled={isPlanning}
+                      className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50"
+                    >
+                      {isPlanning ? (
+                        <div className="flex items-center gap-2">
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Planning Your Adventure...
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Compass className="w-5 h-5" />
+                          Create My Itinerary
+                        </div>
+                      )}
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={clearAllCachedData}
+                      className="w-full text-sm"
+                    >
+                      Clear Cached Data & Refresh
+                    </Button>
+                  </div>
                 </form>
               </CardContent>
             </Card>
