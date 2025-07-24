@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { 
-  Compass, 
-  MapPin, 
-  Clock, 
-  DollarSign, 
-  Navigation, 
+import {
+  Compass,
+  MapPin,
+  Clock,
+  DollarSign,
+  Navigation,
   Calendar,
   Star,
   Car,
@@ -14,8 +14,12 @@ import {
   ArrowLeft,
   Download,
   Share,
-  Plus
+  Plus,
+  Copy,
+  CheckCircle
 } from "lucide-react";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
