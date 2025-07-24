@@ -61,17 +61,25 @@ const mockAttractions: Attraction[] = [
 
 // Helper function to get attractions near a location using Gemini
 const getAttractionsNearLocation = async (location: string, startDate: string, endDate: string): Promise<Attraction[]> => {
+  console.log(`🎯 Getting attractions for: ${location}`);
+
   try {
-    return await generateIndianAttractions({
+    const attractions = await generateIndianAttractions({
       location,
       startDate,
       endDate,
       maxAttractions: 5
     });
+    console.log(`✅ Generated ${attractions.length} attractions for ${location}:`, attractions.map(a => a.name));
+    return attractions;
   } catch (error) {
-    console.error("Error fetching attractions:", error);
-    // Fallback to mock data if Gemini fails
-    return mockAttractions.slice(0, 4);
+    console.error("❌ Error fetching attractions from Gemini:", error);
+
+    // Use Indian fallback based on location instead of US mock data
+    const { getIndianFallbackAttractions } = require("../services/gemini");
+    const fallbackAttractions = getIndianFallbackAttractions(location);
+    console.log(`🔄 Using fallback attractions for ${location}:`, fallbackAttractions.map(a => a.name));
+    return fallbackAttractions;
   }
 };
 
