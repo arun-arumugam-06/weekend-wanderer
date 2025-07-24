@@ -401,12 +401,51 @@ export default function Itinerary() {
               </div>
             </div>
             <div className="flex items-center space-x-3 action-buttons">
+              {/* Save Trip Button */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={checkIfTripIsSaved() ? "default" : "outline"}
+                    size="sm"
+                    onClick={handleSaveTrip}
+                    disabled={isSaving || checkIfTripIsSaved()}
+                    className={checkIfTripIsSaved() ? "bg-green-600 hover:bg-green-700" : ""}
+                  >
+                    {isSaved ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2 text-white" />
+                        Saved!
+                      </>
+                    ) : isSaving ? (
+                      <>
+                        <div className="w-4 h-4 mr-2 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+                        Saving...
+                      </>
+                    ) : checkIfTripIsSaved() ? (
+                      <>
+                        <BookmarkCheck className="w-4 h-4 mr-2" />
+                        Saved
+                      </>
+                    ) : (
+                      <>
+                        <Bookmark className="w-4 h-4 mr-2" />
+                        Save Trip
+                      </>
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{checkIfTripIsSaved() ? "Trip is saved to your collection" : "Save this trip to your collection"}</p>
+                </TooltipContent>
+              </Tooltip>
+
               <Link to="/">
                 <Button variant="outline" size="sm">
                   <Plus className="w-4 h-4 mr-2" />
                   Plan New Trip
                 </Button>
               </Link>
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
