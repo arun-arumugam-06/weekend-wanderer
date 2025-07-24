@@ -25,6 +25,9 @@ export default function Index() {
     setIsPlanning(true);
     setError("");
 
+    // Clear any existing itinerary data
+    localStorage.removeItem("currentItinerary");
+
     try {
       // Check if user is logged in
       const token = localStorage.getItem("token");
