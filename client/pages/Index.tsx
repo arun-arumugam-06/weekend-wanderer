@@ -361,10 +361,16 @@ export default function Index() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Compass className="w-5 h-5 text-white" />
+                <div className="relative w-8 h-8">
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600"></div>
+                  <div className="absolute inset-0.5 rounded-md bg-gradient-to-br from-white to-gray-50"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Compass className="w-4 h-4 text-brand-600" />
+                  </div>
                 </div>
-                <span className="text-xl font-bold">Weekend Wanderer</span>
+                <span className="text-xl font-bold bg-gradient-to-r from-brand-400 to-brand-500 bg-clip-text text-transparent">
+                  Weekend Wanderer
+                </span>
               </div>
               <p className="text-gray-400">
                 Making every weekend an adventure worth remembering.
