@@ -196,40 +196,64 @@ export default function Itinerary() {
         throw new Error('Itinerary content not found');
       }
 
+      // Hide header and action buttons for PDF
+      const header = document.querySelector('header');
+      const actionButtons = document.querySelector('.action-buttons');
+      const originalHeaderDisplay = header ? header.style.display : '';
+      const originalButtonsDisplay = actionButtons ? (actionButtons as HTMLElement).style.display : '';
+
+      if (header) header.style.display = 'none';
+      if (actionButtons) (actionButtons as HTMLElement).style.display = 'none';
+
       // Configure html2canvas options
       const canvas = await html2canvas(element, {
-        scale: 2,
+        scale: 1.5,
         useCORS: true,
         backgroundColor: '#ffffff',
         height: element.scrollHeight,
-        width: element.scrollWidth
+        width: element.scrollWidth,
+        logging: false,
+        allowTaint: true
       });
 
+      // Restore hidden elements
+      if (header) header.style.display = originalHeaderDisplay;
+      if (actionButtons) (actionButtons as HTMLElement).style.display = originalButtonsDisplay;
+
       // Create PDF
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/png', 0.8);
       const pdf = new jsPDF('p', 'mm', 'a4');
 
-      const imgWidth = 210; // A4 width in mm
-      const pageHeight = 295; // A4 height in mm
+      const imgWidth = 190; // A4 width in mm with margins
+      const pageHeight = 277; // A4 height in mm with margins
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
 
-      let position = 0;
+      let position = 10; // Start with 10mm margin
 
-      // Add first page
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      // Add title page
+      pdf.setFontSize(20);
+      pdf.text('Weekend Wanderer', 105, 15, { align: 'center' });
+      pdf.setFontSize(16);
+      pdf.text(`${itinerary.location} Itinerary`, 105, 25, { align: 'center' });
+      pdf.setFontSize(12);
+      pdf.text(`Generated on ${new Date().toLocaleDateString()}`, 105, 35, { align: 'center' });
+
+      // Add first page content
+      pdf.addImage(imgData, 'PNG', 10, position + 30, imgWidth, imgHeight);
+      heightLeft -= (pageHeight - 40);
 
       // Add additional pages if needed
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, 'PNG', 10, position + 10, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
 
       // Download the PDF
-      pdf.save(`${itinerary.location}-itinerary-${new Date().getFullYear()}.pdf`);
+      const fileName = `${itinerary.location.replace(/[^a-zA-Z0-9]/g, '-')}-itinerary-${new Date().toISOString().split('T')[0]}.pdf`;
+      pdf.save(fileName);
 
     } catch (error) {
       console.error('Error generating PDF:', error);
