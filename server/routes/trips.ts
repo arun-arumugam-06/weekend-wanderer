@@ -173,8 +173,8 @@ export const handlePlanTrip: RequestHandler = async (req, res) => {
     }
 
     // Get attractions near location
-    const attractions = getAttractionsNearLocation(location);
-    
+    const attractions = await getAttractionsNearLocation(location, startDate, endDate);
+
     if (attractions.length === 0) {
       const response: TripPlanResponse = {
         success: false,
@@ -184,7 +184,7 @@ export const handlePlanTrip: RequestHandler = async (req, res) => {
     }
 
     // Create optimized itinerary
-    const items = createOptimizedItinerary(attractions, startDate, endDate);
+    const items = await createOptimizedItinerary(attractions, startDate, endDate);
     const totalCost = calculateTotalCost(items);
 
     // Create itinerary object
