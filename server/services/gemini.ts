@@ -18,7 +18,7 @@ export async function generateIndianAttractions(request: GeminiAttractionRequest
       throw new Error("Gemini API key not found in environment variables");
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `Generate a JSON array of ${request.maxAttractions || 5} real tourist attractions in ${request.location}, India.
 
@@ -205,8 +205,8 @@ export async function generateIndianTransportSuggestions(
   distance: number
 ): Promise<any[]> {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
     const prompt = `
 Generate realistic transport options between two locations in India with distance ${distance}m.
 Consider Indian transport modes: Auto-rickshaw, Metro, Bus, Taxi, Walking.
