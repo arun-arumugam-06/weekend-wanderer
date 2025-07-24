@@ -52,7 +52,7 @@ export default function Index() {
       if (data.success && data.itinerary) {
         // Store the itinerary and redirect to view it
         localStorage.setItem("currentItinerary", JSON.stringify(data.itinerary));
-        navigate("/dashboard");
+        navigate("/itinerary");
       } else {
         setError(data.message || "Failed to plan trip");
       }
