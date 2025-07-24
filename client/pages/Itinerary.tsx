@@ -304,13 +304,46 @@ export default function Itinerary() {
                   Plan New Trip
                 </Button>
               </Link>
-              <Button variant="outline" size="sm">
-                <Share className="w-4 h-4 mr-2" />
-                Share
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleShare}
+                disabled={isSharing}
+              >
+                {copySuccess ? (
+                  <>
+                    <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                    Copied!
+                  </>
+                ) : isSharing ? (
+                  <>
+                    <div className="w-4 h-4 mr-2 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+                    Sharing...
+                  </>
+                ) : (
+                  <>
+                    <Share className="w-4 h-4 mr-2" />
+                    Share
+                  </>
+                )}
               </Button>
-              <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Download
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDownload}
+                disabled={isDownloading}
+              >
+                {isDownloading ? (
+                  <>
+                    <div className="w-4 h-4 mr-2 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </>
+                )}
               </Button>
             </div>
           </div>
