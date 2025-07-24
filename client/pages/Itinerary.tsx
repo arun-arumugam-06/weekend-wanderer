@@ -91,12 +91,15 @@ export default function Itinerary() {
   const fetchItinerary = async (itineraryId: string) => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
+      const user = localStorage.getItem("user");
+
+      if (!token || !user) {
         setError("Please log in to view itineraries");
         setLoading(false);
         return;
       }
 
+      console.log(`📋 Fetching itinerary ${itineraryId} for user`);
       const response = await fetch(`/api/trips/${itineraryId}`, {
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -105,6 +108,16 @@ export default function Itinerary() {
 
       const data = await response.json();
       if (data.success && data.itinerary) {
+        const currentUser = JSON.parse(user);
+
+        // Verify the itinerary belongs to the current user
+        if (data.itinerary.userId !== currentUser.id) {
+          setError("You don't have permission to view this itinerary");
+          setLoading(false);
+          return;
+        }
+
+        console.log(`✅ Loaded itinerary: ${data.itinerary.location}`);
         setItinerary(data.itinerary);
       } else {
         setError(data.message || "Failed to load itinerary");
