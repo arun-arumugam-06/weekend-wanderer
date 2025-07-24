@@ -108,10 +108,10 @@ const createOptimizedItinerary = async (
         startTime: itemStart.toISOString(),
         endTime: itemEnd.toISOString(),
         transportToNext: i < attractions.length - 1 ? {
-          type: 'walking',
+          type: 'auto_rickshaw',
           duration: bufferTime,
-          distance: 1000, // 1km default
-          cost: 0
+          distance: 1500, // 1.5km default for Indian cities
+          cost: 60 // ₹60 average auto fare
         } : undefined
       };
       
