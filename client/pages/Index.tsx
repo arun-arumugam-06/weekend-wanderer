@@ -53,8 +53,12 @@ export default function Index() {
       const data: TripPlanResponse = await response.json();
 
       if (data.success && data.itinerary) {
-        // Store the itinerary and redirect to view it
+        // Clear any old cached data first
+        localStorage.removeItem("currentItinerary");
+
+        // Store the fresh itinerary and redirect to view it
         localStorage.setItem("currentItinerary", JSON.stringify(data.itinerary));
+        console.log("✅ New itinerary created:", data.itinerary.location, data.itinerary.items.map(i => i.attraction.name));
         navigate("/itinerary");
       } else {
         setError(data.message || "Failed to plan trip");
