@@ -76,7 +76,7 @@ Return ONLY the JSON array, no additional text or explanation.
   }
 }
 
-function getIndianFallbackAttractions(location: string): Attraction[] {
+export function getIndianFallbackAttractions(location: string): Attraction[] {
   const locationLower = location.toLowerCase();
   
   // Basic Indian attractions based on major cities
