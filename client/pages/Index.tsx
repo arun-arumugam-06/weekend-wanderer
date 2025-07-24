@@ -115,16 +115,36 @@ export default function Index() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Link to="/login">
-                <Button variant="ghost" className="text-gray-600 hover:text-gray-900">
-                  Sign In
-                </Button>
-              </Link>
-              <Link to="/signup">
-                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-                  Get Started
-                </Button>
-              </Link>
+              {isLoggedIn ? (
+                <>
+                  <span className="text-sm text-gray-600">
+                    Welcome back, {userName}!
+                  </span>
+                  <Link to="/dashboard">
+                    <Button variant="ghost" className="text-gray-600 hover:text-gray-900">
+                      My Trips
+                    </Button>
+                  </Link>
+                  <Link to="/dashboard">
+                    <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                      Dashboard
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/login">
+                    <Button variant="ghost" className="text-gray-600 hover:text-gray-900">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
