@@ -296,7 +296,7 @@ export default function Index() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-brand-500 to-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <MapPin className="w-8 h-8 text-white" />
               </div>
               <h4 className="text-xl font-semibold text-gray-900 mb-2">Smart Location Discovery</h4>
