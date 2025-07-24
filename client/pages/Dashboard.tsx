@@ -95,12 +95,17 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, Traveler!</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {user?.name || "Traveler"}!</h2>
           <p className="text-gray-600">Ready to plan your next weekend adventure?</p>
         </div>
 
-        {/* Placeholder Content */}
-        <div className="grid lg:grid-cols-3 gap-8">
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading your dashboard...</p>
+          </div>
+        ) : (
+          <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <Card>
               <CardHeader>
@@ -158,16 +163,20 @@ export default function Dashboard() {
               <CardContent>
                 <div className="space-y-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">0</div>
+                    <div className="text-2xl font-bold text-gray-900">{itineraries.length}</div>
                     <div className="text-sm text-gray-600">Trips Planned</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">0</div>
+                    <div className="text-2xl font-bold text-gray-900">
+                      {new Set(itineraries.map(i => i.location)).size}
+                    </div>
                     <div className="text-sm text-gray-600">Cities Visited</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">$0</div>
-                    <div className="text-sm text-gray-600">Money Saved</div>
+                    <div className="text-2xl font-bold text-gray-900">
+                      ${itineraries.reduce((total, i) => total + i.totalCost, 0)}
+                    </div>
+                    <div className="text-sm text-gray-600">Total Planned Budget</div>
                   </div>
                 </div>
               </CardContent>
@@ -191,7 +200,8 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
