@@ -209,21 +209,51 @@ export const handleGetItinerary: RequestHandler = (req, res) => {
   try {
     const { id } = req.params;
     const userId = (req as any).userId;
-    
+
     const itinerary = itineraries.find(
       item => item.id === id && item.userId === userId
     );
-    
+
     if (!itinerary) {
       return res.status(404).json({ success: false, message: "Itinerary not found" });
     }
-    
+
+    console.log(`📋 Retrieved itinerary ${id} for user ${userId}`);
+
     res.json({
       success: true,
       itinerary
     });
   } catch (error) {
     console.error("Get itinerary error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+export const handleDeleteItinerary: RequestHandler = (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = (req as any).userId;
+
+    const itineraryIndex = itineraries.findIndex(
+      item => item.id === id && item.userId === userId
+    );
+
+    if (itineraryIndex === -1) {
+      return res.status(404).json({ success: false, message: "Itinerary not found" });
+    }
+
+    const deletedItinerary = itineraries[itineraryIndex];
+    itineraries.splice(itineraryIndex, 1);
+
+    console.log(`🗑️ Deleted itinerary ${id} (${deletedItinerary.location}) for user ${userId}`);
+
+    res.json({
+      success: true,
+      message: "Itinerary deleted successfully"
+    });
+  } catch (error) {
+    console.error("Delete itinerary error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
