@@ -33,6 +33,13 @@ export default function Dashboard() {
   const fetchItineraries = async () => {
     try {
       const token = localStorage.getItem("token");
+      if (!token) {
+        console.log("📋 No token found, redirecting to login");
+        navigate("/login");
+        return;
+      }
+
+      console.log("📋 Fetching user itineraries...");
       const response = await fetch("/api/trips", {
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -43,7 +50,18 @@ export default function Dashboard() {
         const data = await response.json();
         if (data.success) {
           setItineraries(data.itineraries || []);
+          console.log(`📋 Loaded ${data.total || 0} saved itineraries`);
+
+          // Update local storage with latest data
+          if (data.itineraries && data.itineraries.length > 0) {
+            localStorage.setItem("userItineraries", JSON.stringify(data.itineraries));
+          }
         }
+      } else if (response.status === 401) {
+        // Token expired or invalid
+        console.log("🔒 Authentication expired, redirecting to login");
+        localStorage.clear();
+        navigate("/login");
       }
     } catch (error) {
       console.error("Error fetching itineraries:", error);
