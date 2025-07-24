@@ -11,48 +11,57 @@ export interface GeminiAttractionRequest {
 }
 
 export async function generateIndianAttractions(request: GeminiAttractionRequest): Promise<Attraction[]> {
-  try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    
-    const prompt = `
-Generate a JSON array of ${request.maxAttractions || 5} real tourist attractions and places to visit in ${request.location}, India. 
-For each attraction, provide the following information in exactly this JSON format:
+  console.log("🚀 Starting Gemini API call for:", request.location);
 
+  try {
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error("Gemini API key not found in environment variables");
+    }
+
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    const prompt = `Generate a JSON array of ${request.maxAttractions || 5} real tourist attractions in ${request.location}, India.
+
+Format (return ONLY this JSON, no other text):
 [
   {
-    "name": "Exact name of the attraction",
-    "description": "Brief 2-3 sentence description highlighting what makes it special",
-    "category": "One of: Temple, Museum, Park, Beach, Monument, Market, Palace, Fort, Garden, Mall, Restaurant",
-    "rating": 4.2,
+    "name": "Marina Beach",
+    "description": "Second longest urban beach in the world, perfect for evening walks",
+    "category": "Beach",
+    "rating": 4.3,
     "estimatedDuration": 120,
-    "entryFee": 50,
-    "coordinates": {
-      "lat": 13.0827,
-      "lng": 80.2707
-    }
+    "entryFee": 0,
+    "coordinates": {"lat": 13.0515, "lng": 80.2825}
   }
 ]
 
-Important requirements:
-- All attractions must be REAL places in or near ${request.location}, India
-- Use accurate GPS coordinates for ${request.location}
-- Entry fees should be in Indian Rupees (₹), use 0 for free attractions
-- Duration should be in minutes (60-240 minutes typical)
-- Rating should be realistic (3.5-4.8 range)
-- Include a mix of cultural, historical, and recreational places
-- Prefer well-known attractions tourists would actually visit
-- Ensure coordinates are within 50km of the city center
+Requirements:
+- REAL places in ${request.location}, India only
+- Entry fees in Indian Rupees (₹)
+- Duration in minutes (60-240)
+- Include temples, monuments, parks, museums
+- Accurate coordinates for the city`;
 
-Return ONLY the JSON array, no additional text or explanation.
-`;
-
+    console.log("📤 Sending prompt to Gemini...");
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-    
+
+    console.log("📥 Gemini response:", text.substring(0, 200) + "...");
+
+    // Clean the response (remove markdown formatting if present)
+    let cleanText = text.trim();
+    if (cleanText.startsWith('```json')) {
+      cleanText = cleanText.replace(/```json\n?/, '').replace(/\n?```$/, '');
+    }
+    if (cleanText.startsWith('```')) {
+      cleanText = cleanText.replace(/```\n?/, '').replace(/\n?```$/, '');
+    }
+
     // Parse the JSON response
-    const attractions = JSON.parse(text.trim());
-    
+    const attractions = JSON.parse(cleanText);
+    console.log("✅ Parsed attractions:", attractions.length);
+
     // Add unique IDs and validate data
     return attractions.map((attraction: any, index: number) => ({
       id: `gemini_${Date.now()}_${index}`,
@@ -67,10 +76,10 @@ Return ONLY the JSON array, no additional text or explanation.
       estimatedDuration: Math.min(Math.max(attraction.estimatedDuration || 90, 30), 480),
       entryFee: Math.max(attraction.entryFee || 0, 0)
     }));
-    
+
   } catch (error) {
-    console.error("Error generating attractions with Gemini:", error);
-    
+    console.error("❌ Error generating attractions with Gemini:", error);
+
     // Fallback: Return India-specific attractions based on common locations
     return getIndianFallbackAttractions(request.location);
   }
