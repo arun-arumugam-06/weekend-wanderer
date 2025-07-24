@@ -29,12 +29,37 @@ export default function Itinerary() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // Check URL parameters for fresh data flag
+    const urlParams = new URLSearchParams(window.location.search);
+    const isFreshTrip = urlParams.get('fresh') === 'true';
+
+    if (isFreshTrip) {
+      console.log("🔄 Fresh trip requested, clearing cache");
+      localStorage.removeItem("currentItinerary");
+    }
+
     // First check if there's a current itinerary in localStorage
     const currentItinerary = localStorage.getItem("currentItinerary");
-    if (currentItinerary && !id) {
+    if (currentItinerary && !id && !isFreshTrip) {
       try {
         const parsed = JSON.parse(currentItinerary);
         console.log("📋 Loading itinerary from localStorage:", parsed.location, parsed.items.map(i => i.attraction.name));
+
+        // Check if this is old cached data with US attractions
+        const hasUSAttractions = parsed.items.some((item: any) =>
+          item.attraction.name.includes("Central Park") ||
+          item.attraction.name.includes("Times Square") ||
+          item.attraction.name.includes("Metropolitan Museum")
+        );
+
+        if (hasUSAttractions) {
+          console.log("🚫 Detected old US cached data, clearing...");
+          localStorage.removeItem("currentItinerary");
+          setError("Old cached data cleared. Please plan a new trip.");
+          setLoading(false);
+          return;
+        }
+
         setItinerary(parsed);
         setLoading(false);
         return;
