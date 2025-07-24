@@ -256,7 +256,7 @@ export default function Itinerary() {
                         <div className="flex items-center space-x-3 text-gray-600">
                           {getTransportIcon(item.transportToNext.type)}
                           <span className="capitalize">
-                            {item.transportToNext.type.replace('_', ' ')} to next stop
+                            {item.transportToNext.type.replace('_', '-')} to next stop
                           </span>
                           <span>•</span>
                           <span>{formatDuration(item.transportToNext.duration)}</span>
