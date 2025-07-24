@@ -15,6 +15,14 @@ export default function Index() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const clearAllCachedData = () => {
+    // Clear all trip-related cached data
+    localStorage.removeItem("currentItinerary");
+    localStorage.removeItem("lastTripLocation");
+    localStorage.removeItem("tripCache");
+    console.log("🗑️ Cleared all cached trip data");
+  };
+
   const handlePlanTrip = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!startDate || !endDate || !location) {
@@ -26,7 +34,7 @@ export default function Index() {
     setError("");
 
     // Clear any existing itinerary data
-    localStorage.removeItem("currentItinerary");
+    clearAllCachedData();
 
     try {
       // Check if user is logged in
