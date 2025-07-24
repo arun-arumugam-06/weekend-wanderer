@@ -79,7 +79,20 @@ export const handleSignup: RequestHandler = async (req, res) => {
 
 export const handleLogin: RequestHandler = async (req, res) => {
   try {
+    console.log("🔐 Login attempt - Headers:", req.headers['content-type']);
+    console.log("🔐 Login attempt - Body exists:", !!req.body);
+
+    // Ensure body is parsed
+    if (!req.body) {
+      const response: AuthResponse = {
+        success: false,
+        message: "Request body is missing"
+      };
+      return res.status(400).json(response);
+    }
+
     const { email, password }: LoginRequest = req.body;
+    console.log("🔐 Login data:", { email: email ? "***" : "missing", password: password ? "***" : "missing" });
 
     // Validate input
     if (!email || !password) {
