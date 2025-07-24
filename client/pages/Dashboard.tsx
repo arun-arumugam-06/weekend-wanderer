@@ -237,6 +237,14 @@ export default function Dashboard() {
                             </p>
                           </div>
                           <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className={`${itinerary.isFavorite ? 'text-red-500 hover:text-red-600' : 'text-gray-400 hover:text-red-500'}`}
+                              onClick={() => handleToggleFavorite(itinerary.id)}
+                            >
+                              <Heart className={`w-4 h-4 ${itinerary.isFavorite ? 'fill-current' : ''}`} />
+                            </Button>
                             <Link to={`/itinerary/${itinerary.id}`}>
                               <Button variant="outline" size="sm">
                                 <MapPin className="w-4 h-4 mr-1" />
