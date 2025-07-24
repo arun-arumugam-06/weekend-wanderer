@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleSignup, handleLogin, handleMe, verifyToken } from "./routes/auth";
-import { handlePlanTrip, handleGetUserItineraries, handleGetItinerary } from "./routes/trips";
+import { handlePlanTrip, handleGetUserItineraries, handleGetItinerary, handleDeleteItinerary } from "./routes/trips";
 
 export function createServer() {
   const app = express();
