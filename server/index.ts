@@ -27,6 +27,18 @@ export function createServer() {
     next();
   });
 
+  // Error handler for JSON parsing
+  app.use((error: any, req: any, res: any, next: any) => {
+    if (error instanceof SyntaxError && 'body' in error) {
+      console.error('❌ JSON parsing error:', error.message);
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid JSON in request body'
+      });
+    }
+    next(error);
+  });
+
   // Example API routes
   app.get("/api/ping", (_req, res) => {
     res.json({ message: "Hello from Express server v2!" });
