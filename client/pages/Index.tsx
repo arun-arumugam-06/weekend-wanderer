@@ -253,7 +253,7 @@ export default function Index() {
                     <Button
                       type="submit"
                       disabled={isPlanning}
-                      className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50"
+                      className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 disabled:opacity-50 shadow-lg"
                     >
                       {isPlanning ? (
                         <div className="flex items-center gap-2">
