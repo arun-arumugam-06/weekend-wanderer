@@ -5,59 +5,7 @@ import { generateIndianAttractions, generateIndianTransportSuggestions } from ".
 // In production, this would be a proper database
 const itineraries: Itinerary[] = [];
 
-// Mock attractions data (in production, this would come from external APIs)
-const mockAttractions: Attraction[] = [
-  {
-    id: "attr_1",
-    name: "Central Park",
-    description: "A large public park in Manhattan, perfect for walking and relaxing",
-    category: "Park",
-    rating: 4.5,
-    coordinates: { lat: 40.7829, lng: -73.9654 },
-    estimatedDuration: 120,
-    entryFee: 0
-  },
-  {
-    id: "attr_2", 
-    name: "Metropolitan Museum of Art",
-    description: "World-renowned art museum with extensive collections",
-    category: "Museum",
-    rating: 4.7,
-    coordinates: { lat: 40.7794, lng: -73.9632 },
-    estimatedDuration: 180,
-    entryFee: 25
-  },
-  {
-    id: "attr_3",
-    name: "Times Square",
-    description: "Iconic commercial intersection and entertainment hub",
-    category: "Landmark",
-    rating: 4.2,
-    coordinates: { lat: 40.7580, lng: -73.9855 },
-    estimatedDuration: 90,
-    entryFee: 0
-  },
-  {
-    id: "attr_4",
-    name: "Brooklyn Bridge",
-    description: "Historic suspension bridge connecting Manhattan and Brooklyn",
-    category: "Landmark", 
-    rating: 4.6,
-    coordinates: { lat: 40.7061, lng: -73.9969 },
-    estimatedDuration: 60,
-    entryFee: 0
-  },
-  {
-    id: "attr_5",
-    name: "High Line",
-    description: "Elevated linear park built on former railway tracks",
-    category: "Park",
-    rating: 4.4,
-    coordinates: { lat: 40.7480, lng: -74.0048 },
-    estimatedDuration: 90,
-    entryFee: 0
-  }
-];
+// US mock attractions removed - now using Gemini for Indian attractions
 
 // Helper function to get attractions near a location using Gemini
 const getAttractionsNearLocation = async (location: string, startDate: string, endDate: string): Promise<Attraction[]> => {
