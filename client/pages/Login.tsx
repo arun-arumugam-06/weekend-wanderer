@@ -235,7 +235,7 @@ export default function Login() {
               Don't have an account?{" "}
               <Link
                 to="/signup"
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-brand-600 hover:text-brand-700 font-medium"
               >
                 Sign up for free
               </Link>
