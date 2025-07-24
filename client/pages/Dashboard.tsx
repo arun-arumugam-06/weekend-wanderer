@@ -1,9 +1,63 @@
-import { Link } from "react-router-dom";
-import { Compass, Calendar, MapPin, Settings, Bell, Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Compass, Calendar, MapPin, Settings, Bell, Search, Plus, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { User, Itinerary } from "@shared/api";
 
 export default function Dashboard() {
+  const [user, setUser] = useState<User | null>(null);
+  const [itineraries, setItineraries] = useState<Itinerary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
+
+    if (!token || !userData) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setUser(JSON.parse(userData));
+      fetchItineraries();
+    } catch (error) {
+      console.error("Error loading user data:", error);
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const fetchItineraries = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/trips", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setItineraries(data.itineraries || []);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching itineraries:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("currentItinerary");
+    navigate("/");
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
