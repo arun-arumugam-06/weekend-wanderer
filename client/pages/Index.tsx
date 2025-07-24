@@ -67,7 +67,7 @@ export default function Index() {
         // Store the fresh itinerary and redirect to view it
         localStorage.setItem("currentItinerary", JSON.stringify(data.itinerary));
         console.log("✅ New itinerary created:", data.itinerary.location, data.itinerary.items.map(i => i.attraction.name));
-        navigate("/itinerary");
+        navigate("/itinerary?fresh=true");
       } else {
         setError(data.message || "Failed to plan trip");
       }
