@@ -55,6 +55,7 @@ export function createServer() {
   app.post("/api/trips/plan", verifyToken, handlePlanTrip);
   app.get("/api/trips", verifyToken, handleGetUserItineraries);
   app.get("/api/trips/:id", verifyToken, handleGetItinerary);
+  app.delete("/api/trips/:id", verifyToken, handleDeleteItinerary);
 
   return app;
 }
