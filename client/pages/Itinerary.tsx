@@ -550,7 +550,7 @@ export default function Itinerary() {
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">
                     {/* Timeline Dot */}
-                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-600 rounded-full flex items-center justify-center text-white font-semibold shadow-lg">
                       {index + 1}
                     </div>
                     
