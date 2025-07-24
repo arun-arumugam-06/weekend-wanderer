@@ -281,6 +281,67 @@ export default function Itinerary() {
     }
   };
 
+  const handleSaveTrip = async () => {
+    if (!itinerary) return;
+
+    setIsSaving(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Please log in to save trips");
+        return;
+      }
+
+      // Check if this itinerary is already saved (has an ID from server)
+      if (itinerary.id.startsWith('itinerary_')) {
+        setIsSaved(true);
+        setTimeout(() => setIsSaved(false), 3000);
+        return;
+      }
+
+      // Save the trip by creating a new itinerary
+      const response = await fetch("/api/trips/plan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          startDate: itinerary.startDate,
+          endDate: itinerary.endDate,
+          location: itinerary.location,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.itinerary) {
+        setIsSaved(true);
+        console.log("✅ Trip saved successfully:", data.itinerary.location);
+
+        // Update the current itinerary with the saved version
+        setItinerary(data.itinerary);
+        localStorage.setItem("currentItinerary", JSON.stringify(data.itinerary));
+
+        setTimeout(() => setIsSaved(false), 3000);
+      } else {
+        throw new Error(data.message || "Failed to save trip");
+      }
+    } catch (error) {
+      console.error("Error saving trip:", error);
+      setError("Failed to save trip. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const checkIfTripIsSaved = () => {
+    if (!itinerary) return false;
+    // Trip is considered saved if it has a proper server-generated ID
+    return itinerary.id.startsWith('itinerary_') && itinerary.userId;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
