@@ -85,6 +85,37 @@ export default function Dashboard() {
     // Redirect to homepage
     navigate("/");
   };
+
+  const handleDeleteTrip = async (tripId: string, tripLocation: string) => {
+    if (!confirm(`Are you sure you want to delete the trip to ${tripLocation}?`)) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/trips/${tripId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        console.log(`🗑️ Deleted trip: ${tripLocation}`);
+        // Remove from local state
+        setItineraries(prev => prev.filter(item => item.id !== tripId));
+
+        // Update local storage
+        const updatedItineraries = itineraries.filter(item => item.id !== tripId);
+        localStorage.setItem("userItineraries", JSON.stringify(updatedItineraries));
+      } else {
+        alert("Failed to delete trip. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error deleting trip:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
