@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Compass, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { AuthResponse } from "@shared/api";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -18,6 +19,8 @@ export default function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -25,25 +28,48 @@ export default function Signup() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setError("");
+
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
+      setError("Passwords don't match!");
       return;
     }
-    
+
     if (!acceptTerms) {
-      alert("Please accept the terms and conditions");
+      setError("Please accept the terms and conditions");
       return;
     }
-    
+
     setIsLoading(true);
-    
-    // TODO: Implement actual signup logic
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
-      alert("Signup functionality coming soon!");
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data: AuthResponse = await response.json();
+
+      if (data.success && data.token) {
+        // Store token in localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Redirect to dashboard
+        navigate("/dashboard");
+      } else {
+        setError(data.message || "Signup failed");
+      }
     } catch (error) {
       console.error("Signup error:", error);
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
