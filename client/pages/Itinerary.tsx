@@ -303,7 +303,7 @@ export default function Itinerary() {
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600 mb-1">
-                  ${itinerary.totalCost}
+                  ₹{itinerary.totalCost}
                 </div>
                 <div className="text-gray-600">Estimated Cost</div>
               </div>
