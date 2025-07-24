@@ -76,11 +76,11 @@ const getAttractionsNearLocation = async (location: string, startDate: string, e
 };
 
 // Helper function to create optimized itinerary
-const createOptimizedItinerary = (
-  attractions: Attraction[], 
-  startDate: string, 
+const createOptimizedItinerary = async (
+  attractions: Attraction[],
+  startDate: string,
   endDate: string
-): ItineraryItem[] => {
+): Promise<ItineraryItem[]> => {
   const items: ItineraryItem[] = [];
   const start = new Date(startDate);
   const end = new Date(endDate);
