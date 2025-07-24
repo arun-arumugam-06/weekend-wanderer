@@ -71,9 +71,18 @@ export default function Dashboard() {
   };
 
   const handleSignOut = () => {
+    console.log("🚪 Signing out user...");
+
+    // Clear all local storage data
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("currentItinerary");
+    localStorage.removeItem("userItineraries");
+
+    console.log("🧹 Cleared local data, itineraries remain saved on server");
+    console.log("🏠 Redirecting to homepage");
+
+    // Redirect to homepage
     navigate("/");
   };
   return (
