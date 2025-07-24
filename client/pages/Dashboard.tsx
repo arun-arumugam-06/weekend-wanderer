@@ -145,18 +145,61 @@ export default function Dashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MapPin className="w-8 h-8 text-gray-400" />
+                {itineraries.length === 0 ? (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <MapPin className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No saved trips yet</h3>
+                    <p className="text-gray-600 mb-6">Start planning your first weekend adventure!</p>
+                    <Link to="/">
+                      <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                        Plan Your First Trip
+                      </Button>
+                    </Link>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No itineraries yet</h3>
-                  <p className="text-gray-600 mb-6">Start planning your first weekend adventure!</p>
-                  <Link to="/">
-                    <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
-                      Plan Your First Trip
-                    </Button>
-                  </Link>
-                </div>
+                ) : (
+                  <div className="space-y-4">
+                    {itineraries.slice(0, 5).map((itinerary) => (
+                      <div key={itinerary.id} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h4 className="font-semibold text-gray-900">{itinerary.location}</h4>
+                              <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                                {itinerary.items.length} stops
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-1">
+                              {new Date(itinerary.startDate).toLocaleDateString()} - {new Date(itinerary.endDate).toLocaleDateString()}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {itinerary.items.length} attractions • ₹{itinerary.totalCost} • Created {new Date(itinerary.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Link to={`/itinerary/${itinerary.id}`}>
+                              <Button variant="outline" size="sm">
+                                <MapPin className="w-4 h-4 mr-1" />
+                                View
+                              </Button>
+                            </Link>
+                            <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {itineraries.length > 5 && (
+                      <div className="text-center pt-4">
+                        <Button variant="outline" className="w-full">
+                          View All {itineraries.length} Trips
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
 
