@@ -221,7 +221,7 @@ export default function Dashboard() {
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">No saved trips yet</h3>
                     <p className="text-gray-600 mb-6">Start planning your first weekend adventure!</p>
                     <Link to="/">
-                      <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                      <Button className="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 shadow-lg">
                         Plan Your First Trip
                       </Button>
                     </Link>
