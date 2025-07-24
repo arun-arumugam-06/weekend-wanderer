@@ -60,10 +60,10 @@ export interface Attraction {
 }
 
 export interface TransportOption {
-  type: 'walking' | 'driving' | 'public_transport';
+  type: 'walking' | 'driving' | 'public_transport' | 'auto_rickshaw' | 'taxi' | 'bus' | 'metro';
   duration: number; // in minutes
   distance: number; // in meters
-  cost?: number;
+  cost?: number; // in Indian Rupees (₹)
 }
 
 export interface ItineraryItem {
