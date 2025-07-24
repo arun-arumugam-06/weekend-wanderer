@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Compass, Calendar, MapPin, Settings, Bell, Search, Plus, LogOut } from "lucide-react";
+import { Compass, Calendar, MapPin, Settings, Bell, Search, Plus, LogOut, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Itinerary } from "@shared/api";
