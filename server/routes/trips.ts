@@ -190,10 +190,14 @@ export const handleGetUserItineraries: RequestHandler = (req, res) => {
   try {
     const userId = (req as any).userId;
     const userItineraries = itineraries.filter(itinerary => itinerary.userId === userId);
-    
+
+    console.log(`📋 Fetching itineraries for user ${userId}: Found ${userItineraries.length} itineraries`);
+    console.log(`📊 Total itineraries in system: ${itineraries.length}`);
+
     res.json({
       success: true,
-      itineraries: userItineraries
+      itineraries: userItineraries,
+      total: userItineraries.length
     });
   } catch (error) {
     console.error("Get itineraries error:", error);
