@@ -31,6 +31,9 @@ export default function Itinerary() {
   const [itinerary, setItinerary] = useState<ItineraryType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
     // Check URL parameters for fresh data flag
