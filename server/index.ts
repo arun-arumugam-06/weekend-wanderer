@@ -19,5 +19,15 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Authentication routes
+  app.post("/api/auth/signup", handleSignup);
+  app.post("/api/auth/login", handleLogin);
+  app.get("/api/auth/me", verifyToken, handleMe);
+
+  // Trip planning routes (protected)
+  app.post("/api/trips/plan", verifyToken, handlePlanTrip);
+  app.get("/api/trips", verifyToken, handleGetUserItineraries);
+  app.get("/api/trips/:id", verifyToken, handleGetItinerary);
+
   return app;
 }
