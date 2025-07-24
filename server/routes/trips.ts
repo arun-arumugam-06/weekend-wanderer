@@ -59,11 +59,20 @@ const mockAttractions: Attraction[] = [
   }
 ];
 
-// Helper function to get attractions near a location
-const getAttractionsNearLocation = (location: string): Attraction[] => {
-  // In production, this would use geocoding and location-based APIs
-  // For demo purposes, return mock data
-  return mockAttractions.slice(0, 4); // Return first 4 attractions
+// Helper function to get attractions near a location using Gemini
+const getAttractionsNearLocation = async (location: string, startDate: string, endDate: string): Promise<Attraction[]> => {
+  try {
+    return await generateIndianAttractions({
+      location,
+      startDate,
+      endDate,
+      maxAttractions: 5
+    });
+  } catch (error) {
+    console.error("Error fetching attractions:", error);
+    // Fallback to mock data if Gemini fails
+    return mockAttractions.slice(0, 4);
+  }
 };
 
 // Helper function to create optimized itinerary
