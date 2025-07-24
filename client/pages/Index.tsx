@@ -342,14 +342,14 @@ export default function Index() {
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">4.9</div>
-              <div className="text-blue-100 flex items-center justify-center gap-1">
+              <div className="text-brand-100 flex items-center justify-center gap-1">
                 <Star className="w-4 h-4 fill-current" />
                 User Rating
               </div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">24/7</div>
-              <div className="text-blue-100">Support</div>
+              <div className="text-brand-100">Support</div>
             </div>
           </div>
         </div>
