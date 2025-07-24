@@ -321,7 +321,7 @@ export default function Itinerary() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 action-buttons">
               <Link to="/">
                 <Button variant="outline" size="sm">
                   <Plus className="w-4 h-4 mr-2" />
