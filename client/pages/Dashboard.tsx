@@ -174,7 +174,7 @@ export default function Dashboard() {
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-gray-900">
-                      ${itineraries.reduce((total, i) => total + i.totalCost, 0)}
+                      ₹{itineraries.reduce((total, i) => total + i.totalCost, 0)}
                     </div>
                     <div className="text-sm text-gray-600">Total Planned Budget</div>
                   </div>
