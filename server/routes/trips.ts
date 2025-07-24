@@ -24,7 +24,6 @@ const getAttractionsNearLocation = async (location: string, startDate: string, e
     console.error("❌ Error fetching attractions from Gemini:", error);
 
     // Use Indian fallback based on location instead of US mock data
-    const { getIndianFallbackAttractions } = require("../services/gemini");
     const fallbackAttractions = getIndianFallbackAttractions(location);
     console.log(`🔄 Using fallback attractions for ${location}:`, fallbackAttractions.map(a => a.name));
     return fallbackAttractions;
