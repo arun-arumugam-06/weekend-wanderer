@@ -161,9 +161,16 @@ export default function Itinerary() {
           </div>
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Oops!</h2>
           <p className="text-gray-600 mb-6">{error}</p>
-          <Link to="/dashboard">
-            <Button>Go to Dashboard</Button>
-          </Link>
+          <div className="space-x-3">
+            <Link to="/">
+              <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                Plan New Trip
+              </Button>
+            </Link>
+            <Link to="/dashboard">
+              <Button variant="outline">Go to Dashboard</Button>
+            </Link>
+          </div>
         </div>
       </div>
     );
