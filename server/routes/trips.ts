@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { TripPlanRequest, TripPlanResponse, Itinerary, Attraction, ItineraryItem } from "@shared/api";
+import { generateIndianAttractions, generateIndianTransportSuggestions } from "../services/gemini";
 
 // In production, this would be a proper database
 const itineraries: Itinerary[] = [];
