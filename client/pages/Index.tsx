@@ -173,7 +173,7 @@ export default function Index() {
           <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               Plan Your Perfect
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Weekend</span>
+              <span className="bg-gradient-to-r from-brand-600 to-brand-700 bg-clip-text text-transparent"> Weekend</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Discover amazing places, create personalized itineraries, and make the most of your weekends with intelligent trip planning powered by real-time data.
