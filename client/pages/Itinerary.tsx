@@ -380,7 +380,7 @@ export default function Itinerary() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-50 via-white to-accent-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-blue-100 sticky top-0 z-50">
+      <header className="bg-white/80 backdrop-blur-md border-b border-brand-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
