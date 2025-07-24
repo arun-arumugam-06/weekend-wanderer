@@ -265,7 +265,7 @@ export default function Itinerary() {
                         </div>
                         {item.transportToNext.cost && item.transportToNext.cost > 0 && (
                           <div className="text-green-600 font-medium">
-                            ${item.transportToNext.cost}
+                            ₹{item.transportToNext.cost}
                           </div>
                         )}
                       </div>
