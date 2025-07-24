@@ -156,7 +156,7 @@ export default function Index() {
                     </Button>
                   </Link>
                   <Link to="/signup">
-                    <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                    <Button className="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 shadow-lg">
                       Get Started
                     </Button>
                   </Link>
