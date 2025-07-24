@@ -17,32 +17,52 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Prevent double submission
+    if (isLoading) {
+      console.log("⏳ Login already in progress, ignoring duplicate submission");
+      return;
+    }
+
     setIsLoading(true);
     setError("");
 
+    console.log("🔐 Starting login process...");
+
     try {
+      const loginData = { email, password };
+      console.log("📤 Sending login request:", { email: email ? "***" : "missing", password: password ? "***" : "missing" });
+
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(loginData),
       });
 
+      console.log("📥 Login response status:", response.status, response.statusText);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
       const data: AuthResponse = await response.json();
+      console.log("✅ Login response:", { success: data.success, hasToken: !!data.token });
 
       if (data.success && data.token) {
         // Store token in localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
+        console.log("🎉 Login successful, redirecting to dashboard");
         // Redirect to dashboard
         navigate("/dashboard");
       } else {
         setError(data.message || "Login failed");
       }
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("❌ Login error:", error);
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
