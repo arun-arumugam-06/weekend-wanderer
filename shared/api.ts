@@ -83,6 +83,7 @@ export interface Itinerary {
   items: ItineraryItem[];
   totalCost: number;
   createdAt: string;
+  isFavorite?: boolean;
 }
 
 export interface TripPlanResponse {
