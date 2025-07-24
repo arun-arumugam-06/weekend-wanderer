@@ -62,6 +62,12 @@ export default function Signup() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
+        console.log("🎉 Signup successful, initializing user data...");
+
+        // Clear any existing cached data for fresh start
+        localStorage.removeItem("currentItinerary");
+
+        console.log("🎉 Redirecting to dashboard");
         // Redirect to dashboard
         navigate("/dashboard");
       } else {
