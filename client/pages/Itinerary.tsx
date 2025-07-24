@@ -240,7 +240,7 @@ export default function Itinerary() {
                           </div>
                           {item.attraction.entryFee && item.attraction.entryFee > 0 && (
                             <div className="text-sm text-green-600 font-medium mt-1">
-                              ${item.attraction.entryFee} entry
+                              ₹{item.attraction.entryFee} entry
                             </div>
                           )}
                         </div>
