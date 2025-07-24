@@ -148,6 +148,97 @@ export default function Itinerary() {
     }
   };
 
+  const handleShare = async () => {
+    if (!itinerary) return;
+
+    setIsSharing(true);
+
+    const shareData = {
+      title: `Weekend Adventure in ${itinerary.location}`,
+      text: `Check out my amazing weekend itinerary for ${itinerary.location}! ${itinerary.items.length} attractions for only ₹${itinerary.totalCost}`,
+      url: window.location.href
+    };
+
+    try {
+      // Try native Web Share API first (mobile/PWA)
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback: Copy link to clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000);
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      // Final fallback: manual copy
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000);
+      } catch (clipboardError) {
+        alert('Unable to share. Please copy the URL manually: ' + window.location.href);
+      }
+    } finally {
+      setIsSharing(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!itinerary) return;
+
+    setIsDownloading(true);
+
+    try {
+      // Create a temporary container for PDF content
+      const element = document.getElementById('itinerary-content');
+      if (!element) {
+        throw new Error('Itinerary content not found');
+      }
+
+      // Configure html2canvas options
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        height: element.scrollHeight,
+        width: element.scrollWidth
+      });
+
+      // Create PDF
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 295; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+
+      let position = 0;
+
+      // Add first page
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      // Add additional pages if needed
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      // Download the PDF
+      pdf.save(`${itinerary.location}-itinerary-${new Date().getFullYear()}.pdf`);
+
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Unable to download PDF. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
