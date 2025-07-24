@@ -141,12 +141,21 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <Compass className="w-6 h-6 text-white" />
+              <div className="relative w-11 h-11">
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 shadow-lg"></div>
+                <div className="absolute inset-1 rounded-lg bg-gradient-to-br from-white to-gray-50 shadow-inner"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="relative w-5 h-5">
+                    <Compass className="w-5 h-5 text-brand-600" />
+                    <div className="absolute top-0.5 left-1/2 w-0.5 h-1.5 bg-red-500 rounded-full transform -translate-x-1/2"></div>
+                  </div>
+                </div>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Weekend Wanderer</h1>
-                <p className="text-xs text-gray-500">Plan your perfect getaway</p>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-brand-600 to-brand-700 bg-clip-text text-transparent">
+                  Weekend Wanderer
+                </h1>
+                <p className="text-xs text-gray-600">Plan your perfect getaway</p>
               </div>
             </Link>
             <div className="flex items-center space-x-4">
