@@ -33,35 +33,37 @@ export default function Itinerary() {
     const urlParams = new URLSearchParams(window.location.search);
     const isFreshTrip = urlParams.get('fresh') === 'true';
 
-    if (isFreshTrip) {
-      console.log("🔄 Fresh trip requested, clearing cache");
-      localStorage.removeItem("currentItinerary");
-    }
-
     // First check if there's a current itinerary in localStorage
     const currentItinerary = localStorage.getItem("currentItinerary");
-    if (currentItinerary && !id && !isFreshTrip) {
+    if (currentItinerary && !id) {
       try {
         const parsed = JSON.parse(currentItinerary);
         console.log("📋 Loading itinerary from localStorage:", parsed.location, parsed.items.map(i => i.attraction.name));
 
-        // Check if this is old cached data with US attractions
+        // Check if this is old cached data with US attractions (only clear if NOT a fresh trip)
         const hasUSAttractions = parsed.items.some((item: any) =>
           item.attraction.name.includes("Central Park") ||
           item.attraction.name.includes("Times Square") ||
           item.attraction.name.includes("Metropolitan Museum")
         );
 
-        if (hasUSAttractions) {
+        if (hasUSAttractions && !isFreshTrip) {
           console.log("🚫 Detected old US cached data, clearing...");
           localStorage.removeItem("currentItinerary");
-          setError("Old cached data cleared. Please plan a new trip.");
+          setError("Old cached data detected. Please plan a new trip to get fresh Indian attractions.");
           setLoading(false);
           return;
         }
 
+        // Load the itinerary (whether fresh or cached)
         setItinerary(parsed);
         setLoading(false);
+
+        // Clean up URL if it's a fresh trip
+        if (isFreshTrip) {
+          window.history.replaceState({}, '', '/itinerary');
+        }
+
         return;
       } catch (e) {
         console.error("Error parsing current itinerary:", e);
@@ -73,7 +75,7 @@ export default function Itinerary() {
     if (id) {
       fetchItinerary(id);
     } else {
-      setError("No itinerary found");
+      setError("No itinerary found. Please plan a trip first.");
       setLoading(false);
     }
   }, [id]);
