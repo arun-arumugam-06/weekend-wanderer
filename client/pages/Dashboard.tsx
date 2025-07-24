@@ -116,6 +116,24 @@ export default function Dashboard() {
       alert("Something went wrong. Please try again.");
     }
   };
+
+  const handleToggleFavorite = (tripId: string) => {
+    setItineraries(prev =>
+      prev.map(item =>
+        item.id === tripId
+          ? { ...item, isFavorite: !item.isFavorite }
+          : item
+      )
+    );
+
+    // Update local storage
+    const updatedItineraries = itineraries.map(item =>
+      item.id === tripId
+        ? { ...item, isFavorite: !item.isFavorite }
+        : item
+    );
+    localStorage.setItem("userItineraries", JSON.stringify(updatedItineraries));
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
