@@ -9,7 +9,7 @@ import {
   Calendar,
   Star,
   Car,
-  FootPrints,
+  Footprints,
   Bus,
   ArrowLeft,
   Download,
