@@ -113,16 +113,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return { error: undefined };
       }
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-      if (error) {
-        return { error };
+        if (error) {
+          return { error };
+        }
+
+        return { error: undefined };
+      } catch (networkError) {
+        console.warn('Supabase sign in failed, falling back to demo mode');
+        return { error: new Error('Network error - please try demo mode') };
       }
-
-      return { error: undefined };
     } catch (error) {
       return { error: error as Error };
     }
