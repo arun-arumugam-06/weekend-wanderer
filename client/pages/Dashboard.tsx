@@ -141,8 +141,8 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center space-x-3">
-              <div className="relative w-11 h-11">
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 shadow-lg"></div>
+              <div className="relative w-11 h-11 float-animation">
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 shadow-lg smooth-transition"></div>
                 <div className="absolute inset-1 rounded-lg bg-gradient-to-br from-white to-gray-50 shadow-inner"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="relative w-5 h-5">
