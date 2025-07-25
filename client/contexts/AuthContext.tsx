@@ -54,13 +54,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     // Supabase mode: Get initial session with error handling
-    supabase.auth.getSession()
+    supabase.auth
+      .getSession()
       .then(({ data: { session } }) => {
         setUser(session?.user ?? null);
         setLoading(false);
       })
       .catch((error) => {
-        console.warn('Supabase auth session error (falling back to demo mode):', error);
+        console.warn(
+          "Supabase auth session error (falling back to demo mode):",
+          error,
+        );
         setLoading(false);
       });
 
@@ -75,7 +79,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       return () => subscription.unsubscribe();
     } catch (error) {
-      console.warn('Supabase auth listener error (falling back to demo mode):', error);
+      console.warn(
+        "Supabase auth listener error (falling back to demo mode):",
+        error,
+      );
       setLoading(false);
     }
   }, []);
@@ -125,8 +132,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         return { error: undefined };
       } catch (networkError) {
-        console.warn('Supabase sign in failed, falling back to demo mode');
-        return { error: new Error('Network error - please try demo mode') };
+        console.warn("Supabase sign in failed, falling back to demo mode");
+        return { error: new Error("Network error - please try demo mode") };
       }
     } catch (error) {
       return { error: error as Error };
@@ -192,8 +199,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         return { error: undefined };
       } catch (networkError) {
-        console.warn('Supabase sign up failed, falling back to demo mode');
-        return { error: new Error('Network error - please try demo mode') };
+        console.warn("Supabase sign up failed, falling back to demo mode");
+        return { error: new Error("Network error - please try demo mode") };
       }
     } catch (error) {
       return { error: error as Error };
@@ -211,7 +218,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       await supabase.auth.signOut();
     } catch (error) {
-      console.warn('Supabase sign out error (continuing anyway):', error);
+      console.warn("Supabase sign out error (continuing anyway):", error);
     }
   };
 
