@@ -32,10 +32,27 @@ export interface DatabaseItinerary {
   updated_at: string
 }
 
+// In-memory storage for demo mode
+let demoUsers: DatabaseUser[] = []
+let demoItineraries: DatabaseItinerary[] = []
+
 // Helper functions for database operations
 export const dbHelpers = {
   // User operations
   async createUser(userData: { email: string; name: string; id: string }) {
+    if (isDemoMode) {
+      const newUser: DatabaseUser = {
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+      demoUsers.push(newUser)
+      console.log('🔧 Demo mode: Created user in memory storage')
+      return newUser
+    }
+
     const { data, error } = await supabase
       .from('users')
       .insert([{
@@ -47,7 +64,7 @@ export const dbHelpers = {
       }])
       .select()
       .single()
-    
+
     if (error) throw error
     return data
   },
