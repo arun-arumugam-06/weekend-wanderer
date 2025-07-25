@@ -336,7 +336,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="glass-card stagger-item">
               <CardHeader>
                 <CardTitle>Pro Tips</CardTitle>
               </CardHeader>
