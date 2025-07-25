@@ -11,7 +11,12 @@ const supabaseAnonKey =
 export const isDemoMode =
   supabaseUrl.includes("demo-project") || supabaseAnonKey.includes("demo");
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Create supabase client with proper error handling for demo mode
+export const supabase = isDemoMode
+  ? createClient('https://demo.supabase.co', 'demo-key', {
+      global: { fetch: () => Promise.reject(new Error('Demo mode - no network requests')) }
+    }) // Create a mock client that won't try to connect
+  : createClient(supabaseUrl, supabaseAnonKey);
 
 // Database types for TypeScript support
 export interface DatabaseUser {
