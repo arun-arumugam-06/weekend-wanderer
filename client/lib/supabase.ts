@@ -70,18 +70,36 @@ export const dbHelpers = {
   },
 
   async getUser(userId: string) {
+    if (isDemoMode) {
+      const user = demoUsers.find(u => u.id === userId)
+      if (!user) throw new Error('User not found')
+      return user
+    }
+
     const { data, error } = await supabase
       .from('users')
       .select('*')
       .eq('id', userId)
       .single()
-    
+
     if (error) throw error
     return data
   },
 
   // Itinerary operations
   async createItinerary(itineraryData: any) {
+    if (isDemoMode) {
+      const newItinerary: DatabaseItinerary = {
+        ...itineraryData,
+        id: `itinerary_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+      demoItineraries.push(newItinerary)
+      console.log('🔧 Demo mode: Created itinerary in memory storage')
+      return newItinerary
+    }
+
     const { data, error } = await supabase
       .from('itineraries')
       .insert([{
@@ -91,18 +109,24 @@ export const dbHelpers = {
       }])
       .select()
       .single()
-    
+
     if (error) throw error
     return data
   },
 
   async getUserItineraries(userId: string) {
+    if (isDemoMode) {
+      return demoItineraries
+        .filter(i => i.user_id === userId)
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    }
+
     const { data, error } = await supabase
       .from('itineraries')
       .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
-    
+
     if (error) throw error
     return data
   },
