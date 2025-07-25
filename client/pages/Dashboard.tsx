@@ -228,8 +228,8 @@ export default function Dashboard() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {itineraries.slice(0, 5).map((itinerary) => (
-                      <div key={itinerary.id} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    {itineraries.slice(0, 5).map((itinerary, index) => (
+                      <div key={itinerary.id} className={`p-4 border border-gray-200 rounded-lg hover:bg-gray-50 smooth-transition smooth-hover stagger-item`} style={{animationDelay: `${index * 0.1}s`}}>
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2">
