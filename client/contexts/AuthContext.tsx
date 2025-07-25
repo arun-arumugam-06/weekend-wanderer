@@ -208,7 +208,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.warn('Supabase sign out error (continuing anyway):', error);
+    }
   };
 
   const value = {
