@@ -618,7 +618,7 @@ export default function Itinerary() {
         </div>
 
         {/* Trip Summary */}
-        <Card className="mt-8 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+        <Card className="mt-8 glass-card border-0 stagger-item">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <DollarSign className="w-5 h-5" />
