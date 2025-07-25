@@ -310,7 +310,7 @@ export default function Dashboard() {
           </div>
 
           <div className="space-y-6">
-            <Card>
+            <Card className="glass-card stagger-item">
               <CardHeader>
                 <CardTitle>Travel Stats</CardTitle>
               </CardHeader>
