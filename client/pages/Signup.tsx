@@ -232,7 +232,7 @@ export default function Signup() {
               <Button
                 type="submit"
                 disabled={isLoading || !acceptTerms}
-                className="w-full h-11 text-base font-semibold bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 disabled:opacity-50 shadow-lg"
+                className="w-full h-11 text-base font-semibold bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 disabled:opacity-50 shadow-lg smooth-hover gradient-shift"
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">
