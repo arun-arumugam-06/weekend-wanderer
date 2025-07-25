@@ -2,8 +2,11 @@ import { createClient } from '@supabase/supabase-js'
 
 // These would typically come from environment variables
 // For demo purposes, using placeholder values
-const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://demo-project.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'demo-anon-key-placeholder'
+
+// Check if we're in demo mode (no real Supabase credentials)
+export const isDemoMode = supabaseUrl.includes('demo-project') || supabaseAnonKey.includes('demo')
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
