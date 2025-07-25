@@ -80,7 +80,7 @@ export default function Dashboard() {
     localStorage.removeItem("userItineraries");
 
     console.log("🧹 Cleared local data, itineraries remain saved on server");
-    console.log("��� Redirecting to homepage");
+    console.log("🏠 Redirecting to homepage");
 
     // Redirect to homepage
     navigate("/");
@@ -284,7 +284,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="glass-card stagger-item">
               <CardHeader>
                 <CardTitle>Quick Actions</CardTitle>
                 <CardDescription>
