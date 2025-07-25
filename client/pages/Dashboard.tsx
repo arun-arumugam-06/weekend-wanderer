@@ -80,7 +80,7 @@ export default function Dashboard() {
     localStorage.removeItem("userItineraries");
 
     console.log("🧹 Cleared local data, itineraries remain saved on server");
-    console.log("🏠 Redirecting to homepage");
+    console.log("��� Redirecting to homepage");
 
     // Redirect to homepage
     navigate("/");
@@ -192,7 +192,7 @@ export default function Dashboard() {
         ) : (
           <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <Card>
+            <Card className="glass-card stagger-item">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                 <div>
                   <CardTitle className="flex items-center gap-2">
