@@ -66,6 +66,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (email: string, password: string) => {
     try {
+      if (isDemoMode) {
+        // Demo mode: Simple email/password check
+        const demoUsers = JSON.parse(localStorage.getItem('demo_users') || '[]');
+        const foundUser = demoUsers.find((u: any) => u.email === email && u.password === password);
+
+        if (!foundUser) {
+          return { error: new Error('Invalid email or password') };
+        }
+
+        // Set user session
+        const userData = { id: foundUser.id, email: foundUser.email, name: foundUser.name };
+        localStorage.setItem('demo_user', JSON.stringify(userData));
+        localStorage.setItem('token', `demo_token_${foundUser.id}`);
+
+        setUser({
+          id: foundUser.id,
+          email: foundUser.email,
+          user_metadata: { name: foundUser.name },
+        } as User);
+
+        return { error: undefined };
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -83,6 +106,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (email: string, password: string, name: string) => {
     try {
+      if (isDemoMode) {
+        // Demo mode: Store user in localStorage
+        const demoUsers = JSON.parse(localStorage.getItem('demo_users') || '[]');
+
+        // Check if user already exists
+        if (demoUsers.find((u: any) => u.email === email)) {
+          return { error: new Error('User already exists') };
+        }
+
+        const newUser = {
+          id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          email,
+          password, // In real app, this would be hashed
+          name,
+          created_at: new Date().toISOString()
+        };
+
+        demoUsers.push(newUser);
+        localStorage.setItem('demo_users', JSON.stringify(demoUsers));
+
+        // Set user session
+        const userData = { id: newUser.id, email: newUser.email, name: newUser.name };
+        localStorage.setItem('demo_user', JSON.stringify(userData));
+        localStorage.setItem('token', `demo_token_${newUser.id}`);
+
+        setUser({
+          id: newUser.id,
+          email: newUser.email,
+          user_metadata: { name: newUser.name },
+        } as User);
+
+        return { error: undefined };
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -104,6 +161,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signOut = async () => {
+    if (isDemoMode) {
+      localStorage.removeItem('demo_user');
+      localStorage.removeItem('token');
+      setUser(null);
+      return;
+    }
+
     await supabase.auth.signOut();
   };
 
