@@ -132,6 +132,18 @@ export const dbHelpers = {
   },
 
   async updateItinerary(id: string, updates: Partial<DatabaseItinerary>) {
+    if (isDemoMode) {
+      const index = demoItineraries.findIndex(i => i.id === id)
+      if (index === -1) throw new Error('Itinerary not found')
+
+      demoItineraries[index] = {
+        ...demoItineraries[index],
+        ...updates,
+        updated_at: new Date().toISOString()
+      }
+      return demoItineraries[index]
+    }
+
     const { data, error } = await supabase
       .from('itineraries')
       .update({
@@ -141,17 +153,24 @@ export const dbHelpers = {
       .eq('id', id)
       .select()
       .single()
-    
+
     if (error) throw error
     return data
   },
 
   async deleteItinerary(id: string) {
+    if (isDemoMode) {
+      const index = demoItineraries.findIndex(i => i.id === id)
+      if (index === -1) throw new Error('Itinerary not found')
+      demoItineraries.splice(index, 1)
+      return
+    }
+
     const { error } = await supabase
       .from('itineraries')
       .delete()
       .eq('id', id)
-    
+
     if (error) throw error
   }
 }
