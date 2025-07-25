@@ -546,7 +546,7 @@ export default function Itinerary() {
                 <div className="absolute left-6 top-24 w-0.5 h-16 bg-gray-200"></div>
               )}
               
-              <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+              <Card className="glass-card border-0 stagger-item" style={{animationDelay: `${index * 0.1}s`}}>
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">
                     {/* Timeline Dot */}
