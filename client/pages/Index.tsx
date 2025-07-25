@@ -109,15 +109,15 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12">
+              <div className="relative w-12 h-12 float-animation">
                 {/* Outer ring */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 shadow-lg"></div>
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 shadow-lg smooth-transition"></div>
                 {/* Inner compass ring */}
                 <div className="absolute inset-1 rounded-full bg-gradient-to-br from-white to-gray-50 shadow-inner"></div>
                 {/* Compass needle */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="relative w-6 h-6">
-                    <Compass className="w-6 h-6 text-brand-600" />
+                    <Compass className="w-6 h-6 text-brand-600 smooth-transition" />
                     <div className="absolute top-1 left-1/2 w-0.5 h-2 bg-red-500 rounded-full transform -translate-x-1/2"></div>
                   </div>
                 </div>
