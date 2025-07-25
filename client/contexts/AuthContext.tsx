@@ -25,7 +25,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
+    if (isDemoMode) {
+      // Demo mode: Check localStorage for user session
+      const savedUser = localStorage.getItem('demo_user');
+      const savedToken = localStorage.getItem('token');
+
+      if (savedUser && savedToken) {
+        try {
+          const userData = JSON.parse(savedUser);
+          setUser({
+            id: userData.id,
+            email: userData.email,
+            user_metadata: { name: userData.name },
+          } as User);
+        } catch (error) {
+          localStorage.removeItem('demo_user');
+          localStorage.removeItem('token');
+        }
+      }
+      setLoading(false);
+      return;
+    }
+
+    // Supabase mode: Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
