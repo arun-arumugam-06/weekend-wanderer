@@ -18,15 +18,25 @@ import {
   Copy,
   CheckCircle,
   Bookmark,
-  BookmarkCheck
+  BookmarkCheck,
 } from "lucide-react";
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Itinerary as ItineraryType, ItineraryItem } from "@shared/api";
 
 export default function Itinerary() {
@@ -43,26 +53,33 @@ export default function Itinerary() {
   useEffect(() => {
     // Check URL parameters for fresh data flag
     const urlParams = new URLSearchParams(window.location.search);
-    const isFreshTrip = urlParams.get('fresh') === 'true';
+    const isFreshTrip = urlParams.get("fresh") === "true";
 
     // First check if there's a current itinerary in localStorage
     const currentItinerary = localStorage.getItem("currentItinerary");
     if (currentItinerary && !id) {
       try {
         const parsed = JSON.parse(currentItinerary);
-        console.log("📋 Loading itinerary from localStorage:", parsed.location, parsed.items.map(i => i.attraction.name));
+        console.log(
+          "📋 Loading itinerary from localStorage:",
+          parsed.location,
+          parsed.items.map((i) => i.attraction.name),
+        );
 
         // Check if this is old cached data with US attractions (only clear if NOT a fresh trip)
-        const hasUSAttractions = parsed.items.some((item: any) =>
-          item.attraction.name.includes("Central Park") ||
-          item.attraction.name.includes("Times Square") ||
-          item.attraction.name.includes("Metropolitan Museum")
+        const hasUSAttractions = parsed.items.some(
+          (item: any) =>
+            item.attraction.name.includes("Central Park") ||
+            item.attraction.name.includes("Times Square") ||
+            item.attraction.name.includes("Metropolitan Museum"),
         );
 
         if (hasUSAttractions && !isFreshTrip) {
           console.log("🚫 Detected old US cached data, clearing...");
           localStorage.removeItem("currentItinerary");
-          setError("Old cached data detected. Please plan a new trip to get fresh Indian attractions.");
+          setError(
+            "Old cached data detected. Please plan a new trip to get fresh Indian attractions.",
+          );
           setLoading(false);
           return;
         }
@@ -73,7 +90,7 @@ export default function Itinerary() {
 
         // Clean up URL if it's a fresh trip
         if (isFreshTrip) {
-          window.history.replaceState({}, '', '/itinerary');
+          window.history.replaceState({}, "", "/itinerary");
         }
 
         return;
@@ -106,7 +123,7 @@ export default function Itinerary() {
       console.log(`📋 Fetching itinerary ${itineraryId} for user`);
       const response = await fetch(`/api/trips/${itineraryId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -135,13 +152,13 @@ export default function Itinerary() {
   };
 
   const formatDateTime = (dateString: string) => {
-    return new Date(dateString).toLocaleString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
+    return new Date(dateString).toLocaleString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
     });
   };
 
@@ -155,14 +172,19 @@ export default function Itinerary() {
 
   const getTransportIcon = (type: string) => {
     switch (type) {
-      case 'walking': return <Footprints className="w-4 h-4" />;
-      case 'driving':
-      case 'taxi': return <Car className="w-4 h-4" />;
-      case 'auto_rickshaw': return <Car className="w-4 h-4" />;
-      case 'public_transport':
-      case 'bus':
-      case 'metro': return <Bus className="w-4 h-4" />;
-      default: return <Navigation className="w-4 h-4" />;
+      case "walking":
+        return <Footprints className="w-4 h-4" />;
+      case "driving":
+      case "taxi":
+        return <Car className="w-4 h-4" />;
+      case "auto_rickshaw":
+        return <Car className="w-4 h-4" />;
+      case "public_transport":
+      case "bus":
+      case "metro":
+        return <Bus className="w-4 h-4" />;
+      default:
+        return <Navigation className="w-4 h-4" />;
     }
   };
 
@@ -174,12 +196,16 @@ export default function Itinerary() {
     const shareData = {
       title: `Weekend Adventure in ${itinerary.location}`,
       text: `Check out my amazing weekend itinerary for ${itinerary.location}! ${itinerary.items.length} attractions for only ₹${itinerary.totalCost}`,
-      url: window.location.href
+      url: window.location.href,
     };
 
     try {
       // Try native Web Share API first (mobile/PWA)
-      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      if (
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare(shareData)
+      ) {
         await navigator.share(shareData);
       } else {
         // Fallback: Copy link to clipboard
@@ -188,14 +214,17 @@ export default function Itinerary() {
         setTimeout(() => setCopySuccess(false), 2000);
       }
     } catch (error) {
-      console.error('Error sharing:', error);
+      console.error("Error sharing:", error);
       // Final fallback: manual copy
       try {
         await navigator.clipboard.writeText(window.location.href);
         setCopySuccess(true);
         setTimeout(() => setCopySuccess(false), 2000);
       } catch (clipboardError) {
-        alert('Unable to share. Please copy the URL manually: ' + window.location.href);
+        alert(
+          "Unable to share. Please copy the URL manually: " +
+            window.location.href,
+        );
       }
     } finally {
       setIsSharing(false);
@@ -209,38 +238,41 @@ export default function Itinerary() {
 
     try {
       // Create a temporary container for PDF content
-      const element = document.getElementById('itinerary-content');
+      const element = document.getElementById("itinerary-content");
       if (!element) {
-        throw new Error('Itinerary content not found');
+        throw new Error("Itinerary content not found");
       }
 
       // Hide header and action buttons for PDF
-      const header = document.querySelector('header');
-      const actionButtons = document.querySelector('.action-buttons');
-      const originalHeaderDisplay = header ? header.style.display : '';
-      const originalButtonsDisplay = actionButtons ? (actionButtons as HTMLElement).style.display : '';
+      const header = document.querySelector("header");
+      const actionButtons = document.querySelector(".action-buttons");
+      const originalHeaderDisplay = header ? header.style.display : "";
+      const originalButtonsDisplay = actionButtons
+        ? (actionButtons as HTMLElement).style.display
+        : "";
 
-      if (header) header.style.display = 'none';
-      if (actionButtons) (actionButtons as HTMLElement).style.display = 'none';
+      if (header) header.style.display = "none";
+      if (actionButtons) (actionButtons as HTMLElement).style.display = "none";
 
       // Configure html2canvas options
       const canvas = await html2canvas(element, {
         scale: 1.5,
         useCORS: true,
-        backgroundColor: '#ffffff',
+        backgroundColor: "#ffffff",
         height: element.scrollHeight,
         width: element.scrollWidth,
         logging: false,
-        allowTaint: true
+        allowTaint: true,
       });
 
       // Restore hidden elements
       if (header) header.style.display = originalHeaderDisplay;
-      if (actionButtons) (actionButtons as HTMLElement).style.display = originalButtonsDisplay;
+      if (actionButtons)
+        (actionButtons as HTMLElement).style.display = originalButtonsDisplay;
 
       // Create PDF
-      const imgData = canvas.toDataURL('image/png', 0.8);
-      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgData = canvas.toDataURL("image/png", 0.8);
+      const pdf = new jsPDF("p", "mm", "a4");
 
       const imgWidth = 190; // A4 width in mm with margins
       const pageHeight = 277; // A4 height in mm with margins
@@ -251,31 +283,32 @@ export default function Itinerary() {
 
       // Add title page
       pdf.setFontSize(20);
-      pdf.text('Weekend Wanderer', 105, 15, { align: 'center' });
+      pdf.text("Weekend Wanderer", 105, 15, { align: "center" });
       pdf.setFontSize(16);
-      pdf.text(`${itinerary.location} Itinerary`, 105, 25, { align: 'center' });
+      pdf.text(`${itinerary.location} Itinerary`, 105, 25, { align: "center" });
       pdf.setFontSize(12);
-      pdf.text(`Generated on ${new Date().toLocaleDateString()}`, 105, 35, { align: 'center' });
+      pdf.text(`Generated on ${new Date().toLocaleDateString()}`, 105, 35, {
+        align: "center",
+      });
 
       // Add first page content
-      pdf.addImage(imgData, 'PNG', 10, position + 30, imgWidth, imgHeight);
-      heightLeft -= (pageHeight - 40);
+      pdf.addImage(imgData, "PNG", 10, position + 30, imgWidth, imgHeight);
+      heightLeft -= pageHeight - 40;
 
       // Add additional pages if needed
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 10, position + 10, imgWidth, imgHeight);
+        pdf.addImage(imgData, "PNG", 10, position + 10, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
 
       // Download the PDF
-      const fileName = `${itinerary.location.replace(/[^a-zA-Z0-9]/g, '-')}-itinerary-${new Date().toISOString().split('T')[0]}.pdf`;
+      const fileName = `${itinerary.location.replace(/[^a-zA-Z0-9]/g, "-")}-itinerary-${new Date().toISOString().split("T")[0]}.pdf`;
       pdf.save(fileName);
-
     } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Unable to download PDF. Please try again.');
+      console.error("Error generating PDF:", error);
+      alert("Unable to download PDF. Please try again.");
     } finally {
       setIsDownloading(false);
     }
@@ -294,7 +327,7 @@ export default function Itinerary() {
       }
 
       // Check if this itinerary is already saved (has an ID from server)
-      if (itinerary.id.startsWith('itinerary_')) {
+      if (itinerary.id.startsWith("itinerary_")) {
         setIsSaved(true);
         setTimeout(() => setIsSaved(false), 3000);
         return;
@@ -305,7 +338,7 @@ export default function Itinerary() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           startDate: itinerary.startDate,
@@ -322,7 +355,10 @@ export default function Itinerary() {
 
         // Update the current itinerary with the saved version
         setItinerary(data.itinerary);
-        localStorage.setItem("currentItinerary", JSON.stringify(data.itinerary));
+        localStorage.setItem(
+          "currentItinerary",
+          JSON.stringify(data.itinerary),
+        );
 
         setTimeout(() => setIsSaved(false), 3000);
       } else {
@@ -339,7 +375,7 @@ export default function Itinerary() {
   const checkIfTripIsSaved = () => {
     if (!itinerary) return false;
     // Trip is considered saved if it has a proper server-generated ID
-    return itinerary.id.startsWith('itinerary_') && itinerary.userId;
+    return itinerary.id.startsWith("itinerary_") && itinerary.userId;
   };
 
   if (loading) {
@@ -418,7 +454,11 @@ export default function Itinerary() {
                     size="sm"
                     onClick={handleSaveTrip}
                     disabled={isSaving || checkIfTripIsSaved()}
-                    className={checkIfTripIsSaved() ? "bg-green-600 hover:bg-green-700" : ""}
+                    className={
+                      checkIfTripIsSaved()
+                        ? "bg-green-600 hover:bg-green-700"
+                        : ""
+                    }
                   >
                     {isSaved ? (
                       <>
@@ -444,7 +484,11 @@ export default function Itinerary() {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{checkIfTripIsSaved() ? "Trip is saved to your collection" : "Save this trip to your collection"}</p>
+                  <p>
+                    {checkIfTripIsSaved()
+                      ? "Trip is saved to your collection"
+                      : "Save this trip to your collection"}
+                  </p>
                 </TooltipContent>
               </Tooltip>
 
@@ -516,24 +560,29 @@ export default function Itinerary() {
         </div>
       </header>
 
-      <div id="itinerary-content" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div
+        id="itinerary-content"
+        className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+      >
         {/* Trip Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <Badge variant="secondary" className="bg-blue-100 text-blue-800">
               <Calendar className="w-3 h-3 mr-1" />
-              {new Date(itinerary.startDate).toLocaleDateString()} - {new Date(itinerary.endDate).toLocaleDateString()}
+              {new Date(itinerary.startDate).toLocaleDateString()} -{" "}
+              {new Date(itinerary.endDate).toLocaleDateString()}
             </Badge>
             <Badge variant="secondary" className="bg-green-100 text-green-800">
-              <DollarSign className="w-3 h-3 mr-1" />
-              ₹{itinerary.totalCost} total
+              <DollarSign className="w-3 h-3 mr-1" />₹{itinerary.totalCost}{" "}
+              total
             </Badge>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Weekend Adventure in {itinerary.location}
           </h1>
           <p className="text-gray-600">
-            Your personalized itinerary with {itinerary.items.length} amazing stops
+            Your personalized itinerary with {itinerary.items.length} amazing
+            stops
           </p>
         </div>
 
@@ -545,49 +594,60 @@ export default function Itinerary() {
               {index < itinerary.items.length - 1 && (
                 <div className="absolute left-6 top-24 w-0.5 h-16 bg-gray-200"></div>
               )}
-              
-              <Card className="glass-card border-0 stagger-item" style={{animationDelay: `${index * 0.1}s`}}>
+
+              <Card
+                className="glass-card border-0 stagger-item"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">
                     {/* Timeline Dot */}
                     <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-600 rounded-full flex items-center justify-center text-white font-semibold shadow-lg">
                       {index + 1}
                     </div>
-                    
+
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <h3 className="text-xl font-semibold text-gray-900 mb-1">
                             {item.attraction.name}
                           </h3>
-                          <p className="text-gray-600 mb-2">{item.attraction.description}</p>
+                          <p className="text-gray-600 mb-2">
+                            {item.attraction.description}
+                          </p>
                           <div className="flex items-center space-x-4 text-sm text-gray-500">
                             <div className="flex items-center gap-1">
                               <Clock className="w-4 h-4" />
-                              {formatDateTime(item.startTime)} - {formatDateTime(item.endTime)}
+                              {formatDateTime(item.startTime)} -{" "}
+                              {formatDateTime(item.endTime)}
                             </div>
                             <div className="flex items-center gap-1">
                               <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                               {item.attraction.rating}
                             </div>
-                            <Badge variant="outline">{item.attraction.category}</Badge>
+                            <Badge variant="outline">
+                              {item.attraction.category}
+                            </Badge>
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-sm text-gray-500 mb-1">Duration</div>
+                          <div className="text-sm text-gray-500 mb-1">
+                            Duration
+                          </div>
                           <div className="font-semibold text-gray-900">
                             {formatDuration(item.attraction.estimatedDuration)}
                           </div>
-                          {item.attraction.entryFee && item.attraction.entryFee > 0 && (
-                            <div className="text-sm text-green-600 font-medium mt-1">
-                              ₹{item.attraction.entryFee} entry
-                            </div>
-                          )}
+                          {item.attraction.entryFee &&
+                            item.attraction.entryFee > 0 && (
+                              <div className="text-sm text-green-600 font-medium mt-1">
+                                ₹{item.attraction.entryFee} entry
+                              </div>
+                            )}
                         </div>
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Transport to Next */}
                   {item.transportToNext && (
                     <>
@@ -596,18 +656,25 @@ export default function Itinerary() {
                         <div className="flex items-center space-x-3 text-gray-600">
                           {getTransportIcon(item.transportToNext.type)}
                           <span className="capitalize">
-                            {item.transportToNext.type.replace('_', '-')} to next stop
+                            {item.transportToNext.type.replace("_", "-")} to
+                            next stop
                           </span>
                           <span>•</span>
-                          <span>{formatDuration(item.transportToNext.duration)}</span>
+                          <span>
+                            {formatDuration(item.transportToNext.duration)}
+                          </span>
                           <span>•</span>
-                          <span>{(item.transportToNext.distance / 1000).toFixed(1)} km</span>
+                          <span>
+                            {(item.transportToNext.distance / 1000).toFixed(1)}{" "}
+                            km
+                          </span>
                         </div>
-                        {item.transportToNext.cost && item.transportToNext.cost > 0 && (
-                          <div className="text-green-600 font-medium">
-                            ₹{item.transportToNext.cost}
-                          </div>
-                        )}
+                        {item.transportToNext.cost &&
+                          item.transportToNext.cost > 0 && (
+                            <div className="text-green-600 font-medium">
+                              ₹{item.transportToNext.cost}
+                            </div>
+                          )}
                       </div>
                     </>
                   )}
@@ -636,7 +703,11 @@ export default function Itinerary() {
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900 mb-1">
                   {formatDuration(
-                    itinerary.items.reduce((total, item) => total + item.attraction.estimatedDuration, 0)
+                    itinerary.items.reduce(
+                      (total, item) =>
+                        total + item.attraction.estimatedDuration,
+                      0,
+                    ),
                   )}
                 </div>
                 <div className="text-gray-600">Total Time</div>

@@ -1,10 +1,23 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CalendarDays, MapPin, Clock, Compass, Users, Star } from "lucide-react";
+import {
+  CalendarDays,
+  MapPin,
+  Clock,
+  Compass,
+  Users,
+  Star,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { TripPlanResponse } from "@shared/api";
 
 export default function Index() {
@@ -72,7 +85,7 @@ export default function Index() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           startDate,
@@ -88,8 +101,15 @@ export default function Index() {
         localStorage.removeItem("currentItinerary");
 
         // Store the fresh itinerary and redirect to view it
-        localStorage.setItem("currentItinerary", JSON.stringify(data.itinerary));
-        console.log("✅ New itinerary created:", data.itinerary.location, data.itinerary.items.map(i => i.attraction.name));
+        localStorage.setItem(
+          "currentItinerary",
+          JSON.stringify(data.itinerary),
+        );
+        console.log(
+          "✅ New itinerary created:",
+          data.itinerary.location,
+          data.itinerary.items.map((i) => i.attraction.name),
+        );
         navigate("/itinerary?fresh=true");
       } else {
         setError(data.message || "Failed to plan trip");
@@ -128,7 +148,9 @@ export default function Index() {
                 <h1 className="text-xl font-bold bg-gradient-to-r from-brand-600 to-brand-700 bg-clip-text text-transparent">
                   Weekend Wanderer
                 </h1>
-                <p className="text-xs text-gray-600">Plan your perfect getaway</p>
+                <p className="text-xs text-gray-600">
+                  Plan your perfect getaway
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -138,7 +160,10 @@ export default function Index() {
                     Welcome back, {userName}!
                   </span>
                   <Link to="/dashboard">
-                    <Button variant="ghost" className="text-gray-600 hover:text-gray-900">
+                    <Button
+                      variant="ghost"
+                      className="text-gray-600 hover:text-gray-900"
+                    >
                       My Trips
                     </Button>
                   </Link>
@@ -151,7 +176,10 @@ export default function Index() {
               ) : (
                 <>
                   <Link to="/login">
-                    <Button variant="ghost" className="text-gray-600 hover:text-gray-900 smooth-hover">
+                    <Button
+                      variant="ghost"
+                      className="text-gray-600 hover:text-gray-900 smooth-hover"
+                    >
                       Sign In
                     </Button>
                   </Link>
@@ -173,10 +201,15 @@ export default function Index() {
           <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               Plan Your Perfect
-              <span className="bg-gradient-to-r from-brand-600 to-brand-700 bg-clip-text text-transparent"> Weekend</span>
+              <span className="bg-gradient-to-r from-brand-600 to-brand-700 bg-clip-text text-transparent">
+                {" "}
+                Weekend
+              </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Discover amazing places, create personalized itineraries, and make the most of your weekends with intelligent trip planning powered by real-time data.
+              Discover amazing places, create personalized itineraries, and make
+              the most of your weekends with intelligent trip planning powered
+              by real-time data.
             </p>
           </div>
 
@@ -184,9 +217,12 @@ export default function Index() {
           <div className="max-w-4xl mx-auto">
             <Card className="glass-card border-0 stagger-item">
               <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-bold text-gray-900">Plan Your Weekend Adventure</CardTitle>
+                <CardTitle className="text-2xl font-bold text-gray-900">
+                  Plan Your Weekend Adventure
+                </CardTitle>
                 <CardDescription className="text-gray-600">
-                  Tell us when and where you want to go, and we'll create the perfect itinerary for you
+                  Tell us when and where you want to go, and we'll create the
+                  perfect itinerary for you
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -194,7 +230,10 @@ export default function Index() {
                   <div className="grid md:grid-cols-2 gap-6">
                     {/* Start Date */}
                     <div className="space-y-2">
-                      <Label htmlFor="startDate" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <Label
+                        htmlFor="startDate"
+                        className="text-sm font-medium text-gray-700 flex items-center gap-2"
+                      >
                         <CalendarDays className="w-4 h-4" />
                         Start Date & Time
                       </Label>
@@ -210,7 +249,10 @@ export default function Index() {
 
                     {/* End Date */}
                     <div className="space-y-2">
-                      <Label htmlFor="endDate" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <Label
+                        htmlFor="endDate"
+                        className="text-sm font-medium text-gray-700 flex items-center gap-2"
+                      >
                         <Clock className="w-4 h-4" />
                         End Date & Time
                       </Label>
@@ -227,7 +269,10 @@ export default function Index() {
 
                   {/* Location */}
                   <div className="space-y-2">
-                    <Label htmlFor="location" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                    <Label
+                      htmlFor="location"
+                      className="text-sm font-medium text-gray-700 flex items-center gap-2"
+                    >
                       <MapPin className="w-4 h-4" />
                       Preferred Location
                     </Label>
@@ -288,9 +333,12 @@ export default function Index() {
       <section className="py-16 bg-white/30 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Weekend Wanderer?</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">
+              Why Choose Weekend Wanderer?
+            </h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Our intelligent planning engine creates personalized itineraries based on real-time data and your preferences
+              Our intelligent planning engine creates personalized itineraries
+              based on real-time data and your preferences
             </p>
           </div>
 
@@ -299,29 +347,44 @@ export default function Index() {
               <div className="w-16 h-16 bg-gradient-to-br from-brand-500 to-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg smooth-hover float-animation">
                 <MapPin className="w-8 h-8 text-white" />
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">Smart Location Discovery</h4>
+              <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                Smart Location Discovery
+              </h4>
               <p className="text-gray-600">
-                Find the best attractions and hidden gems near your destination using real-time data from multiple sources
+                Find the best attractions and hidden gems near your destination
+                using real-time data from multiple sources
               </p>
             </div>
 
             <div className="text-center stagger-item">
-              <div className="w-16 h-16 bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg smooth-hover float-animation" style={{animationDelay: '1s'}}>
+              <div
+                className="w-16 h-16 bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg smooth-hover float-animation"
+                style={{ animationDelay: "1s" }}
+              >
                 <Clock className="w-8 h-8 text-white" />
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">Optimized Scheduling</h4>
+              <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                Optimized Scheduling
+              </h4>
               <p className="text-gray-600">
-                Get perfectly timed itineraries that maximize your experience while minimizing travel time between locations
+                Get perfectly timed itineraries that maximize your experience
+                while minimizing travel time between locations
               </p>
             </div>
 
             <div className="text-center stagger-item">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg smooth-hover float-animation" style={{animationDelay: '2s'}}>
+              <div
+                className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg smooth-hover float-animation"
+                style={{ animationDelay: "2s" }}
+              >
                 <Users className="w-8 h-8 text-white" />
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">Cost Estimation</h4>
+              <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                Cost Estimation
+              </h4>
               <p className="text-gray-600">
-                Know exactly how much your trip will cost with detailed breakdowns for transport, meals, and activities
+                Know exactly how much your trip will cost with detailed
+                breakdowns for transport, meals, and activities
               </p>
             </div>
           </div>
