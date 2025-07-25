@@ -182,7 +182,7 @@ export default function Index() {
 
           {/* Main Planning Form */}
           <div className="max-w-4xl mx-auto">
-            <Card className="shadow-2xl border-0 bg-white/70 backdrop-blur-sm">
+            <Card className="glass-card border-0 stagger-item">
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl font-bold text-gray-900">Plan Your Weekend Adventure</CardTitle>
                 <CardDescription className="text-gray-600">
